@@ -1,10 +1,10 @@
 from discord.ext import commands
-import discord
+from bot import MyBot
 from virtualcrypto import AsyncVirtualCryptoClient
 
 
 class Wallet(commands.Cog):
-    def __init__(self, bot):
+    def __init__(self, bot: MyBot):
         self.bot = bot
         self.vcrypto: AsyncVirtualCryptoClient = self.bot.vcrypto
 
@@ -15,11 +15,11 @@ class Wallet(commands.Cog):
         if currency is None:
             await ctx.send("このサーバーでは通貨は作成されていません。")
             return
-        balances = [i for i in await self.vcrypto.get_balances() if i.currency.guild == ctx.guild.id]
-        if not balances:
+        balance = await self.bot.get_balance(ctx.guild.id)
+        if balance is None:
             value = 0
         else:
-            value = balances[0].amount
+            value = balance.amount
 
         await ctx.send(f"{value}{currency.unit}を持っています。")
 

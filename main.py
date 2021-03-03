@@ -6,7 +6,8 @@ load_dotenv()
 bot = MyBot()
 
 extensions = [
-    'cogs.wallet'
+    'cogs.wallet',
+    'cogs.give'
 ]
 
 for extension in extensions:
